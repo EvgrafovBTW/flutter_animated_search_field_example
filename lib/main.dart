@@ -47,17 +47,27 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class Buffer extends StatelessWidget {
+class Buffer extends StatefulWidget {
   const Buffer({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  State<Buffer> createState() => _BufferState();
+}
+
+class _BufferState extends State<Buffer> {
+  @override
+  void didChangeDependencies() {
     WidgetsBinding.instance.addPostFrameCallback((d) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('app restarted')));
     });
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.all(8.0),
       child: AnimationScreen(),
