@@ -41,11 +41,26 @@ class MainApp extends StatelessWidget {
         ),
       ),
       home: const Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: AnimationScreen(),
-        ),
+        body: Buffer(),
       ),
+    );
+  }
+}
+
+class Buffer extends StatelessWidget {
+  const Buffer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((d) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('app restarted')));
+    });
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: AnimationScreen(),
     );
   }
 }

@@ -11,6 +11,27 @@ class AnimationScreen extends StatefulWidget {
 
 class _AnimationScreenState extends State<AnimationScreen> {
   final TextEditingController controller = TextEditingController();
+  final FocusNode node = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    node.addListener(_onFocusChanged);
+  }
+
+  void _onFocusChanged() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    node
+      ..removeListener(_onFocusChanged)
+      ..dispose();
+    controller.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,6 +41,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
           children: [
             Flexible(
               child: TextFormField(
+                focusNode: node,
                 controller: controller,
               ),
             ),
