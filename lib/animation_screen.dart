@@ -9,6 +9,8 @@ class AnimationScreen extends StatefulWidget {
   State<AnimationScreen> createState() => _AnimationScreenState();
 }
 
+const duration = Durations.short4;
+
 class _AnimationScreenState extends State<AnimationScreen> {
   final TextEditingController controller = TextEditingController();
   final FocusNode node = FocusNode();
@@ -39,7 +41,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
       children: [
         Row(
           children: [
-            Flexible(
+            Expanded(
               child: TextFormField(
                 focusNode: node,
                 controller: controller,
@@ -48,9 +50,22 @@ class _AnimationScreenState extends State<AnimationScreen> {
                 },
               ),
             ),
-            Container(
-              decoration: BoxDecoration(border: Border.all()),
-              child: const _CancelButton(),
+            AnimatedContainer(
+              duration: duration,
+              width: node.hasFocus ? 90 : 0,
+              child: AnimatedOpacity(
+                duration: duration,
+                opacity: node.hasFocus ? 1 : 0,
+                child: AnimatedSlide(
+                  duration: duration,
+                  offset: Offset(node.hasFocus ? 0 : 1, 0),
+                  curve: Curves.fastOutSlowIn,
+                  child: _CancelButton(() {
+                    controller.clear();
+                    node.unfocus();
+                  }),
+                ),
+              ),
             ),
           ],
         ),
@@ -60,13 +75,20 @@ class _AnimationScreenState extends State<AnimationScreen> {
 }
 
 class _CancelButton extends StatelessWidget {
-  const _CancelButton();
+  const _CancelButton(this.onPressed);
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
-      child: const Text('Отменить'),
+      onPressed: onPressed,
+      child: const Text(
+        'Cancel',
+        softWrap: false,
+        style: TextStyle(
+          overflow: TextOverflow.visible,
+        ),
+      ),
     );
   }
 }
