@@ -43,6 +43,9 @@ class _AnimationScreenState extends State<AnimationScreen> {
               child: TextFormField(
                 focusNode: node,
                 controller: controller,
+                onTapOutside: (event) {
+                  node.unfocus();
+                },
               ),
             ),
             Container(
